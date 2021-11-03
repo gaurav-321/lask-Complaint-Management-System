@@ -2,7 +2,7 @@ from app import app, db
 from flask import url_for, redirect, render_template, request, jsonify, session, flash
 from models import User
 from methods import login_user, user_logged
-from form import LoginForm, RegistrationForm
+from form import LoginForm, RegistrationForm, ComplaintForm
 
 
 @app.route('/')
@@ -51,6 +51,8 @@ def register_page():
 @app.route("/send_complaint")
 def send_complaint():
     if user_logged():
+        form = ComplaintForm()
+
         return render_template("send_complaint.html")
     else:
         return redirect("/unauthorized")
