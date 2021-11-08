@@ -1,9 +1,10 @@
-from app import app, db
+from app import app, db, allowed_file
 from flask import url_for, redirect, render_template, request, jsonify, session, flash
 from models import User
 from methods import login_user, user_logged
 from form import LoginForm, RegistrationForm, ComplaintForm
-
+from werkzeug.utils import secure_filename
+import os
 
 @app.route('/')
 def home_page():
@@ -48,12 +49,28 @@ def register_page():
         return render_template("/register.html", form=form)
 
 
-@app.route("/send_complaint")
+@app.route("/send_complaint", methods=['POST', 'GET'])
 def send_complaint():
-    if user_logged():
+    if user_logged() or 1 == 1:
         form = ComplaintForm()
+        if request.method == "POST":
+            if True is True:
+                print(request.files)
+                files = request.files['media[]']
+                print(files)
+                for file in files:
+                    if file and allowed_file(file.filename):
+                        filename = secure_filename(file.filename)
+                        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-        return render_template("send_complaint.html")
+                flash('File(s) successfully uploaded')
+                return redirect('/complaint')
+            else:
+                flash("Please Complete Form", "danger")
+                return redirect("/send_complaint")
+
+        else:
+            return render_template("send_complaint.html", form=form)
     else:
         return redirect("/unauthorized")
 

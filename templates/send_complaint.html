@@ -1,7 +1,71 @@
 {% extends "layout.html" %}
 {% block content %}
 <div class="col-12">
+    <section class="h-100 h-custom" style="background-color: #8fc4b7;">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-lg-10 col-xl-6">
+                    <div class="card rounded-4">
+                        <img src="https://mdbootstrap.com/img/Photos/new-templates/bootstrap-registration/img3.jpg"
+                             class="w-100" style="border-top-left-radius: .3rem; border-top-right-radius: .3rem;"
+                             alt="Sample photo">
+                        <div class="card-body p-4 p-md-5 ">
+                            <form class="px-md-2" action="/send_complaint" method="POST">
+                                <div class="form-outline mb-4">
+                                    <label class="form-label" for="form3Example1q">Title</label>
+                                    {{ form.title(class_="form-control",id="form3Example1q") }}
+                                    {% if form.title.errors %}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.title.errors %}
+                                        <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    {% endif %}
+                                </div>
 
+                                <div class="form-outline mb-4 pb-2 pb-md-0 mb-md-5">
+                                    <label class="form-label" for="form3Example2q">Description</label>
+                                    {{ form.description(class_="form-control",id="form3Example2q", rows=5) }}
+                                    {% if form.description.errors %}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.description.errors %}
+                                        <span>{{ error }}</span>
+                                        {% endfor %}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                <div class="row mb-4 pb-2 pb-md-0 mb-md-5">
+                                    <div class="col-7">
+                                        {{ form.location(class_="form-control",id="form3Example3q") }}
+                                        {% if form.location.errors %}
+                                        <div class="invalid-feedback">
+                                            {% for error in form.location.errors %}
+                                            <span>{{ error }}</span>
+                                            {% endfor %}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-5 w-100">
+                                        <button class="btn btn-primary w-100" onclick="send_location()">Send Location
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="row mb-4 pb-2 pb-md-0 mb-md-5">
+                                    <div class="col-12">
+                                        <label for="formFileMultiple" class="form-label">Attach Files</label>
+                                        <input class="form-control" type="file" name="media[]">
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-success btn-lg mb-1 w-100">Submit</button>
+
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
 </div>
 {% endblock %}

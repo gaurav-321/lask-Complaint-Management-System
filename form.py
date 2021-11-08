@@ -1,3 +1,4 @@
+import wtforms.widgets
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, MultipleFileField
 from wtforms.validators import DataRequired, Length, Email, EqualTo
@@ -23,9 +24,8 @@ class LoginForm(FlaskForm):
 class ComplaintForm(FlaskForm):
     title = StringField('title',
                         validators=[DataRequired(), Length(min=2, max=20)])
-    description = StringField('Username',
-                              validators=[DataRequired(), Length(min=2, max=500)])
+    description = StringField('description',
+                              validators=[DataRequired(), Length(min=2, max=500)],  widget=wtforms.widgets.TextArea())
     location = StringField('location',
                            validators=[DataRequired(), Length(min=2, max=20)])
-    media = MultipleFileField('Media')
     submit = SubmitField('Login')
