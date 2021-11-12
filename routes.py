@@ -1,10 +1,11 @@
 from app import app, db, allowed_file
 from flask import url_for, redirect, render_template, request, jsonify, session, flash
-from models import User
+from models import User, Complaint
 from methods import login_user, user_logged
 from form import LoginForm, RegistrationForm, ComplaintForm
 from werkzeug.utils import secure_filename
 import os
+
 
 @app.route('/')
 def home_page():
@@ -55,14 +56,17 @@ def send_complaint():
         form = ComplaintForm()
         if request.method == "POST":
             if True is True:
-                print(request.files)
-                files = request.files['media[]']
-                print(files)
+                data = request.form.to_dict()
+                files = request.files.getlist('media[]')
+                filenames = []
                 for file in files:
                     if file and allowed_file(file.filename):
                         filename = secure_filename(file.filename)
+                        filenames.append(filename)
                         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-
+                complaint_query = Complaint(data['title'], data['description'], data['location'], ",".join(filenames))
+                db.session.add(complaint_query)
+                db.session.commit()
                 flash('File(s) successfully uploaded')
                 return redirect('/complaint')
             else:
@@ -77,10 +81,11 @@ def send_complaint():
 
 @app.route("/complaint", methods=['GET'])
 def complaint():
+    complaints = get_complaints()
     if request.args.get("show") is "resolved":
         return render_template("complaint.html")
     else:
-        return render_template("complaint.html")
+        return render_template("complaint.html", complaints=complaints)
 
 
 @app.route("/logout")
@@ -94,3 +99,18 @@ def logout():
 @app.route("/unauthorized")
 def unauthorized():
     return "unauthorized user"
+
+
+@app.route('/uploads/<filename>')
+def display_image(filename):
+    return redirect(url_for('static', filename='uploads/' + filename), code=301)
+
+
+def get_complaints():
+    complaints = Complaint.query.order_by(Complaint.title).all()
+    return [(x.title, x.description, x.location, x.media) for x in complaints]
+
+
+db.session.query(Complaint).delete()
+db.session.commit()
+db.create_all()

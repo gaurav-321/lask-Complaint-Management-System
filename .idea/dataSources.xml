@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:sqlite:F:\PycharmProjects\flask_project_colleges\test.db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="test [2]" uuid="b9c23ba3-6354-48b1-8ecb-8094e0b7aa62">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:C:\Users\shikh\PycharmProjects\flask_project_colleges\test.db</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

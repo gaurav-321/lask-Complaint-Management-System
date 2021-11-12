@@ -10,7 +10,8 @@
                              class="w-100" style="border-top-left-radius: .3rem; border-top-right-radius: .3rem;"
                              alt="Sample photo">
                         <div class="card-body p-4 p-md-5 ">
-                            <form class="px-md-2" action="/send_complaint" method="POST">
+
+                            <form class="px-md-2" action="/send_complaint" method="POST" enctype="multipart/form-data">
                                 <div class="form-outline mb-4">
                                     <label class="form-label" for="form3Example1q">Title</label>
                                     {{ form.title(class_="form-control",id="form3Example1q") }}
@@ -53,7 +54,7 @@
                                 <div class="row mb-4 pb-2 pb-md-0 mb-md-5">
                                     <div class="col-12">
                                         <label for="formFileMultiple" class="form-label">Attach Files</label>
-                                        <input class="form-control" type="file" name="media[]">
+                                        <input class="form-control" type="file" name="media[]" multiple>
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-success btn-lg mb-1 w-100">Submit</button>
