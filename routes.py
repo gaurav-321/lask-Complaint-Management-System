@@ -40,7 +40,7 @@ def register_page():
         if User.query.filter_by(username=data['username']).first():
             flash("User is already registered", "danger")
             return redirect("/register")
-        user = User(data['username'], data['password'])
+        user = User(data['username'], data['password'], 'visitor')
         db.session.add(user)
         db.session.commit()
         flash(f'User has been successfully registered', 'success')
@@ -83,9 +83,15 @@ def send_complaint():
 def complaint():
     complaints = get_complaints()
     if request.args.get("show") is "resolved":
-        return render_template("complaint.html")
+        return render_template("complaint.html", complaints=[x for x in complaints if x.status == "resolved"])
     else:
         return render_template("complaint.html", complaints=complaints)
+
+
+@app.route("/admin", methods=['GET'])
+def admin_page():
+
+    return render_template("admin.html")
 
 
 @app.route("/logout")
@@ -107,10 +113,10 @@ def display_image(filename):
 
 
 def get_complaints():
-    complaints = Complaint.query.order_by(Complaint.title).all()
-    return [(x.title, x.description, x.location, x.media) for x in complaints]
+    complaints = Complaint.query.order_by(Complaint.id).all()
+    return [(x.id, x.title, x.description, x.location, x.media) for x in complaints]
 
 
-db.session.query(Complaint).delete()
-db.session.commit()
+# db.session.query(Complaint).delete()
+# db.session.commit()
 db.create_all()

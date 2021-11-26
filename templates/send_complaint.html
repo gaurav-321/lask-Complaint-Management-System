@@ -1,5 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
+
+<script src="{{ url_for('static',filename='submit.js')}}"></script>
 <div class="col-12">
     <section class="h-100 h-custom" style="background-color: #8fc4b7;">
         <div class="container py-5 h-100">
@@ -37,7 +39,7 @@
                                 </div>
                                 <div class="row mb-4 pb-2 pb-md-0 mb-md-5">
                                     <div class="col-7">
-                                        {{ form.location(class_="form-control",id="form3Example3q") }}
+                                        {{ form.location(class_="form-control",id="LocationField") }}
                                         {% if form.location.errors %}
                                         <div class="invalid-feedback">
                                             {% for error in form.location.errors %}
@@ -47,8 +49,7 @@
                                         {% endif %}
                                     </div>
                                     <div class="col-5 w-100">
-                                        <button class="btn btn-primary w-100" onclick="send_location()">Send Location
-                                        </button>
+                                        <input type="button" class="btn btn-primary w-100" id="submit" value="Send Location" style="color:white;" onclick="send_location()"/>
                                     </div>
                                 </div>
                                 <div class="row mb-4 pb-2 pb-md-0 mb-md-5">

@@ -26,6 +26,6 @@ db = SQLAlchemy(app)
 
 if __name__ == '__main__':
     from routes import *
-
     db.create_all()
+    db.session.commit()
     app.run(host="127.0.0.1", port=8080, debug=True, threaded=True)

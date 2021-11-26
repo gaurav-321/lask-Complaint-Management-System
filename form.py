@@ -23,9 +23,9 @@ class LoginForm(FlaskForm):
 
 class ComplaintForm(FlaskForm):
     title = StringField('title',
-                        validators=[DataRequired(), Length(min=2, max=20)])
+                        validators=[DataRequired(), Length(min=2, max=40)])
     description = StringField('description',
-                              validators=[DataRequired(), Length(min=2, max=500)],  widget=wtforms.widgets.TextArea())
+                              validators=[DataRequired(), Length(min=2, max=200)],  widget=wtforms.widgets.TextArea())
     location = StringField('location',
-                           validators=[DataRequired(), Length(min=2, max=20)])
+                           validators=[DataRequired(), Length(min=2, max=30)])
     submit = SubmitField('Login')
