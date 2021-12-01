@@ -1,6 +1,6 @@
 from app import app, db, allowed_file
 from flask import url_for, redirect, render_template, request, jsonify, session, flash
-from models import User, Complaint
+from models import User, Complaint, Department
 from methods import login_user, user_logged
 from form import LoginForm, RegistrationForm, ComplaintForm
 from werkzeug.utils import secure_filename
@@ -36,15 +36,16 @@ def login_page():
 def register_page():
     form = RegistrationForm()
     if request.method == "POST":
+        print(request.environ['HTTP_ORIGIN'])
         data = request.form.to_dict()
         if User.query.filter_by(username=data['username']).first():
             flash("User is already registered", "danger")
-            return redirect("/register")
-        user = User(data['username'], data['password'], 'visitor')
+            return redirect("/register") if data['type'] == "visitor" else redirect("/admin?id=3")
+        user = User(data['username'], data['password'], data['type'])
         db.session.add(user)
         db.session.commit()
         flash(f'User has been successfully registered', 'success')
-        return redirect("/login")
+        return redirect("/login") if data['type'] == "visitor" else redirect("/admin?id=3")
 
     else:
         return render_template("/register.html", form=form)
@@ -88,10 +89,23 @@ def complaint():
         return render_template("complaint.html", complaints=complaints)
 
 
-@app.route("/admin", methods=['GET'])
+@app.route("/admin", methods=['GET', 'POST'])
 def admin_page():
-
-    return render_template("admin.html")
+    form = RegistrationForm()
+    if request.method == "POST":
+        form = request.form.to_dict()
+        department = Department(form['dept'])
+        db.session.add(department)
+        db.session.commit()
+        return redirect(f"/admin?id=2")
+    elif request.args.get("delete"):
+        obj = Department.query.filter_by(id=int(request.args.get("delete"))).one()
+        db.session.delete(obj)
+        db.session.commit()
+        return render_template("admin.html", page=request.args.get("id"), departments=get_department())
+    else:
+        return render_template("admin.html", page=request.args.get("id"), departments=get_department(), form=form,
+                               complaints=[x for x in get_complaints() if x.status == "new"])
 
 
 @app.route("/logout")
@@ -114,7 +128,12 @@ def display_image(filename):
 
 def get_complaints():
     complaints = Complaint.query.order_by(Complaint.id).all()
-    return [(x.id, x.title, x.description, x.location, x.media) for x in complaints]
+    return [(x.id, x.title, x.description, x.location, x.media, x.status, x.assign) for x in complaints]
+
+
+def get_department():
+    department = Department.query.order_by(Department.id).all()
+    return [(x.id, x.name) for x in department]
 
 
 # db.session.query(Complaint).delete()

@@ -1,26 +1,159 @@
 {% extends "layout.html" %}
 {% block content %}
 <div class="col-12 mt-3">
-    <nav class="navbar navbar-expand-lg navbar-light bg-white  ">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
-                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav ml-auto mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link border border-dark bg-secondary ml-1" href="#">Assign Complain</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link border border-dark ml-1" href="#">Create Departments</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link border border-dark ml-1" href="#">Staff SignUp</a>
-                </li>
-            </ul>
+    <div class="container">
+        <div class="row text-center ml-auto ">
+            <div class="button btn-primary col-md-4 pt-2 pb-2 w-80 border border-dark">
+                <a class="a-link " href="/admin?id=1" style="color: white">Assign Complaint</a>
+            </div>
+            <div class="button btn-primary col-md-4 pt-2 pb-2 w-80 border border-dark">
+                <a class="a-link " href="/admin?id=2" style="color: white">Create Department</a>
+            </div>
+            <div class="button btn-primary col-md-4 pt-2 pb-2 w-80 border border-dark">
+                <a class="a-link " href="/admin?id=3" style="color: white">Create Faculty User</a>
+            </div>
         </div>
-    </nav>
-
+    </div>
 </div>
+
+{% if page=="1" %}
+
+
+<div class="complaint container" style="margin-top: 10%;">
+    <table class="table table">
+        <thead class="thead-dark">
+        <tr>
+            <th>#</th>
+            <th>title</th>
+            <th>Summary</th>
+            <th>Assign</th>
+            <th>Status</th>
+            <th>Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for x in complaints %}
+        <tr>
+            <th scope="row">{{ x[0] }}</th>
+            <td>{{ x[1] }}</td>
+            <td>{{ x[2] }}</td>
+            <td>{{ x[-1] }}</td>
+            <td>{{ x[-2] }}</td>
+            <td><i class="fa fa-trash mr-1"></i><a class="a" href="/admin?id=1&del_comp={{ x[0] }}">Delete</a></td>
+        </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+</div>
+</div>
+
+
+
+{% elif page=="2" %}
+
+
+
+
+<div class="department container" style="margin-top: 10%;">
+    <form action="/admin" class="form" method="post">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" name="dept" placeholder="Add Department">
+            <div class="input-group-append">
+                <button class="input-group-text" name="type" value="add">Create Department</button>
+            </div>
+        </div>
+    </form>
+    <table class="table table">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col-2">#</th>
+            <th scope="col-8">Department</th>
+            <th scope="col-2">Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for x in departments %}
+        <tr>
+            <th scope="row">{{ x[0] }}</th>
+            <td>{{ x[1] }}</td>
+            <td><i class="fa fa-trash mr-1"></i><a class="a" href="/admin?id=2&delete={{ x[0] }}">Delete</a></td>
+        </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+</div>
+
+
+
+
+{% else %}
+
+
+
+
+ <div id="login" class="my-5">
+        <div class="container">
+            <div id="login-row" class="row justify-content-center align-items-center">
+                <div id="login-column" class="col-md-6">
+                    <div id="login-box" class="col-md-12">
+                        <form id="login-form" class="form" action="/register" method="post">
+                            <h3 class="text-center text-dark">Faculty Register</h3>
+                            <div class="form-group">
+                                <label for="username" class="text-dark">Username:</label><br>
+                                {{ form.username(class_="form-control") }}
+                                {% if form.username.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.username.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                <label for="password" class="text-dark">Password:</label><br>
+                                {{ form.password(class_="form-control") }}
+                                {% if form.password.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.password.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                <label for="password" class="text-dark">Confirm Password:</label><br>
+                                {{ form.confirm_password(class_="form-control") }}
+                                {% if form.confirm_password.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.confirm_password.errors %}
+                                    <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            </div>
+                            <input type="hidden" value="faculty" name="type">
+                            <div class="form-group">
+                                {{ form.submit(class="btn btn-success btn-md mt-2 w-100", type="submit", value="SUBMIT")
+                                }}
+
+                            </div>
+                            <div id="register-link" class="text-right d-none">
+                                <a href="#" class="text-dark">Register here</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+{% endif %}
 {% endblock %}
