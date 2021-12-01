@@ -59,12 +59,19 @@ def send_complaint():
             if True is True:
                 data = request.form.to_dict()
                 files = request.files.getlist('media[]')
+                print(files)
                 filenames = []
-                for file in files:
-                    if file and allowed_file(file.filename):
-                        filename = secure_filename(file.filename)
-                        filenames.append(filename)
-                        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                try:
+                    if len(files.keys()) == 0:
+                        raise Exception("error")
+                    for file in files:
+                        if file and allowed_file(file.filename):
+                            filename = secure_filename(file.filename)
+                            filenames.append(filename)
+                            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                except:
+                    flash('Please select files', "danger")
+                    return redirect('/send_complaint')
                 complaint_query = Complaint(data['title'], data['description'], data['location'], ",".join(filenames))
                 db.session.add(complaint_query)
                 db.session.commit()
@@ -83,10 +90,13 @@ def send_complaint():
 @app.route("/complaint", methods=['GET'])
 def complaint():
     complaints = get_complaints()
-    if request.args.get("show") is "resolved":
-        return render_template("complaint.html", complaints=[x for x in complaints if x.status == "resolved"])
+    print([x for x in complaints if x[-2] == "resolved"])
+    print(request.args)
+    if request.args.get("show") == "resolved":
+        print("hello")
+        return render_template("complaint.html", complaints=[x for x in complaints if x[-2] == "resolved"])
     else:
-        return render_template("complaint.html", complaints=complaints)
+        return render_template("complaint.html", complaints=[x for x in complaints if x[-2] == "new"])
 
 
 @app.route("/admin", methods=['GET', 'POST'])
