@@ -37,7 +37,21 @@
             <th scope="row">{{ x[0] }}</th>
             <td>{{ x[1] }}</td>
             <td>{{ x[2] }}</td>
-            <td>{{ x[-1] }}</td>
+            <td>
+                {% if x[-1] %}
+                {{ x[-1] }}
+                {% else %}
+                <form action="/admin" method="POST">
+                    <input type="hidden" name="complaint_id" value="{{ x[0] }}"/>
+                    <select name="dept_name" onchange="this.form.submit()">
+                        <option value="" selected disabled hidden>Choose here</option>
+                        {% for y in departments %}
+                        <option value="{{ y[1] }}">{{ y[1] }}</option>
+                        {% endfor %}
+                    </select>
+                </form>
+                {% endif %}
+            </td>
             <td>{{ x[-2] }}</td>
             <td><i class="fa fa-trash mr-1"></i><a class="a" href="/admin?id=1&del_comp={{ x[0] }}">Delete</a></td>
         </tr>
@@ -49,10 +63,7 @@
 </div>
 
 
-
 {% elif page=="2" %}
-
-
 
 
 <div class="department container" style="margin-top: 10%;">
@@ -86,73 +97,72 @@
 </div>
 
 
-
-
 {% else %}
 
 
+<div id="login" class="my-5">
+    <div class="container">
+        <div id="login-row" class="row justify-content-center align-items-center">
+            <div id="login-column" class="col-md-6">
+                <div id="login-box" class="col-md-12">
+                    <form id="login-form" class="form" action="/register" method="post">
+                        <h3 class="text-center text-dark">Faculty Register</h3>
+                        <div class="form-group">
+                            <label for="username" class="text-dark">Username:</label><br>
+                            {{ form.username(class_="form-control") }}
+                            {% if form.username.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in form.username.errors %}
+                                <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="text-dark">Password:</label><br>
+                            {{ form.password(class_="form-control") }}
+                            {% if form.password.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in form.password.errors %}
+                                <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="text-dark">Confirm Password:</label><br>
+                            {{ form.confirm_password(class_="form-control") }}
+                            {% if form.confirm_password.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in form.confirm_password.errors %}
+                                <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="type" class="text-dark">Select Department:</label><br>
+                            <select class="form-control" name="type">
+                                <option value="" selected disabled hidden>Choose here</option>
+                                {% for y in departments %}
+                                <option value="{{ y[1] }}">{{ y[1] }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            {{ form.submit(class="btn btn-success btn-md mt-2 w-100", type="submit", value="SUBMIT")
+                            }}
 
-
- <div id="login" class="my-5">
-        <div class="container">
-            <div id="login-row" class="row justify-content-center align-items-center">
-                <div id="login-column" class="col-md-6">
-                    <div id="login-box" class="col-md-12">
-                        <form id="login-form" class="form" action="/register" method="post">
-                            <h3 class="text-center text-dark">Faculty Register</h3>
-                            <div class="form-group">
-                                <label for="username" class="text-dark">Username:</label><br>
-                                {{ form.username(class_="form-control") }}
-                                {% if form.username.errors %}
-                                <div class="invalid-feedback">
-                                    {% for error in form.username.errors %}
-                                    <span>{{ error }}</span>
-                                    {% endfor %}
-                                </div>
-                                {% endif %}
-                            </div>
-                            <div class="form-group">
-                                <label for="password" class="text-dark">Password:</label><br>
-                                {{ form.password(class_="form-control") }}
-                                {% if form.password.errors %}
-                                <div class="invalid-feedback">
-                                    {% for error in form.password.errors %}
-                                    <span>{{ error }}</span>
-                                    {% endfor %}
-                                </div>
-                                {% endif %}
-                            </div>
-                            <div class="form-group">
-                                <label for="password" class="text-dark">Confirm Password:</label><br>
-                                {{ form.confirm_password(class_="form-control") }}
-                                {% if form.confirm_password.errors %}
-                                <div class="invalid-feedback">
-                                    {% for error in form.confirm_password.errors %}
-                                    <span>{{ error }}</span>
-                                    {% endfor %}
-                                </div>
-                                {% endif %}
-                            </div>
-                            <input type="hidden" value="faculty" name="type">
-                            <div class="form-group">
-                                {{ form.submit(class="btn btn-success btn-md mt-2 w-100", type="submit", value="SUBMIT")
-                                }}
-
-                            </div>
-                            <div id="register-link" class="text-right d-none">
-                                <a href="#" class="text-dark">Register here</a>
-                            </div>
-                        </form>
-                    </div>
+                        </div>
+                        <div id="register-link" class="text-right d-none">
+                            <a href="#" class="text-dark">Register here</a>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-
-
-
-
-
+</div>
 
 
 {% endif %}

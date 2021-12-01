@@ -22,7 +22,7 @@ def login_page():
             data = request.form.to_dict()
             user = User.query.filter_by(username=data['username'], password=data['password']).first()
             if user:
-                login_user(data)
+                login_user(data, user.role)
                 flash(f'User has been successfully registered', 'success')
                 return redirect("/")
             else:
@@ -93,19 +93,46 @@ def complaint():
 def admin_page():
     form = RegistrationForm()
     if request.method == "POST":
-        form = request.form.to_dict()
-        department = Department(form['dept'])
-        db.session.add(department)
-        db.session.commit()
-        return redirect(f"/admin?id=2")
+        data = request.form.to_dict()
+        if "dept" in data.keys():
+            department = Department(data['dept'])
+            db.session.add(department)
+            db.session.commit()
+            return redirect(f"/admin?id=2")
+        else:
+            obj = Complaint.query.filter_by(id=data['complaint_id']).one()
+            obj.assign = data['dept_name']
+            db.session.commit()
+            return redirect(f"/admin?id=1")
     elif request.args.get("delete"):
         obj = Department.query.filter_by(id=int(request.args.get("delete"))).one()
         db.session.delete(obj)
         db.session.commit()
-        return render_template("admin.html", page=request.args.get("id"), departments=get_department())
+        return redirect(f"/admin?id=2")
+    elif request.args.get("del_comp"):
+        obj = Complaint.query.filter_by(id=int(request.args.get("del_comp"))).one()
+        db.session.delete(obj)
+        db.session.commit()
+        return redirect(f"/admin?id=1")
     else:
         return render_template("admin.html", page=request.args.get("id"), departments=get_department(), form=form,
-                               complaints=[x for x in get_complaints() if x.status == "new"])
+                               complaints=[x for x in get_complaints()])
+
+
+@app.route("/faculty")
+def faculty():
+    if request.args.get("delete"):
+        obj = Complaint.query.filter_by(id=int(request.args.get("delete"))).one()
+        db.session.delete(obj)
+        db.session.commit()
+        return redirect(f"/faculty")
+    elif request.args.get("completed"):
+        obj = Complaint.query.filter_by(id=int(request.args.get("completed"))).one()
+        obj.status = "resolved"
+        db.session.commit()
+        return redirect(f"/faculty")
+    return render_template("faculty.html", complaints=[x for x in get_complaints() if
+                                                       x[-1] == session['dept'] and x[-2] == "new"])
 
 
 @app.route("/logout")

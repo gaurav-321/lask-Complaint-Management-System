@@ -13,7 +13,7 @@ function slider_animation() {
     }
 }
 
-var text = ["Send Complaint Easily","And Quickly"];
+var text = ["Send Complaint Easily", "And Quickly"];
 var counter = 0;
 var elem = $("#animation_text");
 var bar = $("#text_typing");
@@ -25,10 +25,9 @@ function change() {
         elem.html(text[current_text]);
         counter = 0;
         sleepFor(1000);
-        if (current_text==0){
-            current_text=1
-        }
-        else{
+        if (current_text == 0) {
+            current_text = 1
+        } else {
             current_text = 0
         }
     }
@@ -37,7 +36,16 @@ function change() {
     elem.html(text[current_text].slice(0, counter));
 
 
-
-
-
 }
+
+$(".carousel").swipe({
+
+    swipe: function (event, direction, distance, duration, fingerCount, fingerData) {
+
+        if (direction == 'left') $(this).carousel('next');
+        if (direction == 'right') $(this).carousel('prev');
+
+    },
+    allowPageScroll: "vertical"
+
+});
