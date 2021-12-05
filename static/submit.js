@@ -13,3 +13,4 @@ function showPosition(position) {
     input_field.value = current_location;
     $("#submit").prop("disabled", false);
 }
+

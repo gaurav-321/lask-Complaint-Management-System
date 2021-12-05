@@ -49,3 +49,11 @@ $(".carousel").swipe({
     allowPageScroll: "vertical"
 
 });
+
+function send_alert() {
+    if (document.getElementById("sub_email").value.length>0){
+        alertify.confirm("Do you want to subscribe?")
+        document.getElementById("sub_email").value = "";
+    }
+
+}

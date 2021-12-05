@@ -62,20 +62,21 @@ def send_complaint():
                 print(files)
                 filenames = []
                 try:
-                    if len(files.keys()) == 0:
+                    if len(files) == 0:
                         raise Exception("error")
                     for file in files:
                         if file and allowed_file(file.filename):
                             filename = secure_filename(file.filename)
                             filenames.append(filename)
                             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                except:
+                except Exception as e:
+                    print(e)
                     flash('Please select files', "danger")
                     return redirect('/send_complaint')
                 complaint_query = Complaint(data['title'], data['description'], data['location'], ",".join(filenames))
                 db.session.add(complaint_query)
                 db.session.commit()
-                flash('File(s) successfully uploaded')
+                flash('File(s) successfully uploaded', 'success')
                 return redirect('/complaint')
             else:
                 flash("Please Complete Form", "danger")

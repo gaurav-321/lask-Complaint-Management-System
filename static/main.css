@@ -1,6 +1,6 @@
 body {
     overflow-x: hidden;
- background: #EEE;
+    background: #EEE;
 }
 
 /*----  Main Style  ----*/
@@ -101,7 +101,8 @@ body {
 .newsletter-subscribe {
     color: #313437;
     background-color: #ffffff;
-    padding: 55px 74px
+    padding: 55px 74px;
+    border-radius:3%;
 }
 
 .newsletter-subscribe p {
@@ -173,7 +174,6 @@ body {
     color: #fff;
     outline: none !important
 }
-
 
 
 .newsletter {
@@ -249,6 +249,7 @@ ul {
 .footer-section {
     background: #151414;
     position: relative;
+    border-radius: 5% 5% 0 0/1% 1% 0 0;
 }
 
 .footer-cta {
@@ -454,6 +455,7 @@ ul {
     justify-content: center;
     align-items: center;
     height: 350px;
+    border-radius: 0 0 3% 3%/0 0 50% 50%;
 }
 
 .typing-slider {
