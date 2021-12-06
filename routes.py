@@ -23,7 +23,7 @@ def login_page():
             user = User.query.filter_by(username=data['username'], password=data['password']).first()
             if user:
                 login_user(data, user.role)
-                flash(f'User has been successfully registered', 'success')
+                flash(f'User has been successfully logged in', 'success')
                 return redirect("/")
             else:
                 flash(f'Incorrect User/Password', 'danger')
