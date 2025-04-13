@@ -1,15 +1,15 @@
 # Lask Complaint Management System 📝
 
-## Description
+✨ **Description**  
 Lask is a web application designed to streamline complaint management within an organization. It offers features like user authentication, complaint submission, status updates, and administrative controls for managing users and departments. This system aims to enhance communication and efficiency in handling complaints.
 
-## Features
+🚀 **Features**
 - **User Authentication**: Secure login and registration.
 - **Complaint Submission**: Submit complaints with optional media files.
 - **Complaint Management**: View, filter, and update complaint statuses.
 - **Admin Dashboard**: Manage users and departments.
 
-## Installation
+🛠️ **Installation**  
 To set up the project locally, follow these steps:
 
 1. **Clone the repository**:
@@ -45,7 +45,7 @@ To set up the project locally, follow these steps:
    flask run
    ```
 
-## Usage
+📦 **Usage**  
 Here’s how you can use the Lask Complaint Management System:
 
 ### User Registration
@@ -86,21 +86,42 @@ def admin_dashboard():
     return render_template('admin.html', title='Admin Dashboard')
 ```
 
-## Configuration
+🔧 **Configuration**  
 - **Environment Variables**:
   - `SECRET_KEY`: A secret key used for securely signing the session cookie.
   - `SQLALCHEMY_DATABASE_URI`: The database URI for SQLAlchemy.
 
-## Tests
+🧪 **Tests**  
 To run tests, use the following command:
 ```bash
 python -m unittest discover tests
 ```
 
-## Contributing
+📁 **Project Structure**
+```
+lask-Complaint-Management-System/
+├── app.py
+├── config.py
+├── models.py
+├── routes.py
+├── static/
+│   └── css/
+│   └── js/
+├── templates/
+│   ├── base.html
+│   ├── register.html
+│   ├── submit_complaint.html
+│   └── admin.html
+├── tests/
+│   └── test_app.py
+├── requirements.txt
+└── README.md
+```
+
+🙌 **Contributing**  
 Contributions are welcome! Please read our [contributing guidelines](CONTRIBUTING.md) to get started.
 
-## License
+📄 **License**  
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ---
